@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 import { CLASSES } from './constants';
 
+import './style.scss';
+
 import {
 	PaginationConfigModel,
 	addButtonsPropertiesModel,

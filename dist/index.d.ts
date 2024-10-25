@@ -1,0 +1,35 @@
+import { PaginationConfigModel, addButtonsPropertiesModel, hiddenButtonsConfigModel } from './interfaces';
+export declare class Pagination {
+    component: HTMLElement;
+    paginationWrapperSelector: string;
+    paginationWrapper: HTMLElement | undefined;
+    dynamicElementSelector: string;
+    dynamicElements: HTMLElement[];
+    previousButtonInner: string;
+    nextButtonInner: string;
+    itemsPerPage: number;
+    url: URL;
+    currentPage: number;
+    totalPages: number;
+    buttons: HTMLElement[];
+    prevButton: HTMLElement | undefined;
+    nextButton: HTMLElement | undefined;
+    emptyMapInner: string;
+    buttonsMap: any[];
+    dynamicItemSelector: any;
+    hiddenButtons: hiddenButtonsConfigModel;
+    constructor(component: string | HTMLElement | undefined, { paginationWrapperSelector, dynamicElementSelector, previousButtonInner, nextButtonInner, itemsPerPage, hiddenButtons, }: PaginationConfigModel);
+    init: () => void;
+    initVariables: () => void;
+    createButtonsMap: () => void;
+    addCustomButtons: () => void;
+    addButton: ({ content, label }: addButtonsPropertiesModel) => void;
+    updateButtonsAttrs: () => void;
+    makeDisable: (button: HTMLElement) => void;
+    makeEnable: (button: HTMLElement) => void;
+    update: () => void;
+    goToCurrent: () => void;
+    addPageParam: () => void;
+    clickHandler: (event: MouseEvent) => void;
+    addRelLinks: () => void;
+}
