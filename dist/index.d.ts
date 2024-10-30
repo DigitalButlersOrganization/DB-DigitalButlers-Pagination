@@ -1,3 +1,4 @@
+import './style.scss';
 import { PaginationConfigModel, addButtonsPropertiesModel, hiddenButtonsConfigModel } from './interfaces';
 export declare class Pagination {
     component: HTMLElement;

@@ -1,6 +1,6 @@
-var p = Object.defineProperty;
-var c = (h, t, e) => t in h ? p(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
-var i = (h, t, e) => (c(h, typeof t != "symbol" ? t + "" : t, e), e);
+var c = Object.defineProperty;
+var p = (h, t, e) => t in h ? c(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
+var i = (h, t, e) => (p(h, typeof t != "symbol" ? t + "" : t, e), e);
 const a = "js--", r = {
   ACTIVE: `${a}active`,
   UNACTIVE: `${a}unactive`,
