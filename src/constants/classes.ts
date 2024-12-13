@@ -10,12 +10,8 @@ export const CLASSES: ClassesModel = {
 	ACTIVE: `${PREFIX}active`,
 	UNACTIVE: `${PREFIX}unactive`,
 	VISIBLE: `${PREFIX}visible`,
-	TAB: `${PREFIX}tab`,
-	PANEL: `${PREFIX}panel`,
-	TABS_WRAPPER: `${PREFIX}tabs-wrapper`,
-	TAB_LIST: `${PREFIX}tab-list`,
-	PANEL_LIST: `${PREFIX}panel-list`,
 	BUTTON: `${PREFIX}pagination-button`,
 	CURRENT: `${PREFIX}pagination-current`,
 	EMPTY_PLACE: `${PREFIX}pagination-empty-place`,
+	HIDDEN: `${PREFIX}hidden-by-pagination`,
 };
