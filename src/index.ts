@@ -224,11 +224,11 @@ export class Pagination {
 		this.dynamicElements.forEach((item, index) => {
 			const isActive = Math.ceil((index + 1) / this.itemsPerPage) === this.currentPage;
 			if (isActive) {
-				item.classList.add(CLASSES.HIDDEN);
+				item.classList.remove(CLASSES.HIDDEN);
 				item.removeAttribute('style');
 				item.removeAttribute('inert');
 			} else {
-				item.classList.remove(CLASSES.HIDDEN);
+				item.classList.add(CLASSES.HIDDEN);
 				item.style.display = 'none';
 				item.setAttribute('inert', 'true');
 			}
