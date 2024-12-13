@@ -3,7 +3,7 @@ import { CLASSES } from './constants';
 
 import './style.scss';
 
-import { PaginationConfigModel, addButtonsPropertiesModel, hiddenButtonsConfigModel, pageMapItemModel } from './interfaces';
+import { EventModel, PaginationConfigModel, addButtonsPropertiesModel, hiddenButtonsConfigModel, pageMapItemModel } from './interfaces';
 
 export class Pagination {
 	component: HTMLElement;
@@ -24,6 +24,7 @@ export class Pagination {
 	buttonsMap: any[];
 	dynamicItemSelector: any;
 	hiddenButtons: hiddenButtonsConfigModel;
+	on: EventModel;
 
 	// eslint-disable-next-line default-param-last
 	constructor(
@@ -37,6 +38,7 @@ export class Pagination {
 			hiddenButtons = {
 				min: 6,
 			},
+			on = {},
 		}: PaginationConfigModel,
 	) {
 		this.component = typeof component === 'string' ? (document.querySelector(component) as HTMLElement) : component;
@@ -56,6 +58,7 @@ export class Pagination {
 		this.buttonsMap = [];
 		this.emptyMapInner = '...';
 		this.hiddenButtons = hiddenButtons;
+		this.on = on;
 
 		this.init();
 	}
@@ -68,6 +71,7 @@ export class Pagination {
 			this.initVariables();
 			this.paginationWrapper.addEventListener('click', this.clickHandler);
 		}
+		this.on?.afterInit?.(this);
 	};
 
 	initVariables = () => {
@@ -235,6 +239,7 @@ export class Pagination {
 		});
 		this.addPageParam();
 		this.addRelLinks();
+		this.on?.change?.(this);
 	};
 
 	addPageParam = () => {

@@ -1,13 +1,21 @@
+import { Pagination } from './index';
+
+export interface EventModel {
+	afterInit?: (pagination: Pagination) => {};
+	change?: (pagination: Pagination) => {};
+}
+
 export interface PaginationConfigModel {
-  paginationWrapperSelector?: string,
-  dynamicElementSelector?: string,
-  previousButtonInner?: string,
-  nextButtonInner?: string,
-  itemsPerPage: number,
-  hiddenButtons?: {
-    min: number,
-  }
-  animationLength: number,
+	paginationWrapperSelector?: string;
+	dynamicElementSelector?: string;
+	previousButtonInner?: string;
+	nextButtonInner?: string;
+	itemsPerPage: number;
+	hiddenButtons?: {
+		min: number;
+	};
+	animationLength: number;
+	on?: EventModel;
 	// tabbuttonsListSelector: string,
 	// deletableTabs: boolean,
 	// initialTab: number,
@@ -18,16 +26,16 @@ export interface PaginationConfigModel {
 }
 
 export interface hiddenButtonsConfigModel {
-  min: number,
+	min: number;
 }
 
 export interface pageMapItemModel {
-  page: any,
-  visible: boolean,
-  current: boolean,
+	page: any;
+	visible: boolean;
+	current: boolean;
 }
 
 export interface addButtonsPropertiesModel {
-  content: string,
-  label: string,
+	content: string;
+	label: string;
 }

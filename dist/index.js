@@ -94,7 +94,7 @@ class g {
     });
     i(this, "goToCurrent", () => {
       this.dynamicElements.forEach((t, e) => {
-        Math.ceil((e + 1) / this.itemsPerPage) === this.currentPage ? (t.classList.add(a.HIDDEN), t.removeAttribute("style"), t.removeAttribute("inert")) : (t.classList.remove(a.HIDDEN), t.style.display = "none", t.setAttribute("inert", "true"));
+        Math.ceil((e + 1) / this.itemsPerPage) === this.currentPage ? (t.classList.remove(a.HIDDEN), t.removeAttribute("style"), t.removeAttribute("inert")) : (t.classList.add(a.HIDDEN), t.style.display = "none", t.setAttribute("inert", "true"));
       }), this.addPageParam(), this.addRelLinks();
     });
     i(this, "addPageParam", () => {
