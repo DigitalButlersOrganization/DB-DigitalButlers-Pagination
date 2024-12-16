@@ -1,3 +1,8 @@
+import { Pagination } from './index';
+export interface EventModel {
+    afterInit?: (pagination: Pagination) => {};
+    change?: (pagination: Pagination) => {};
+}
 export interface PaginationConfigModel {
     paginationWrapperSelector?: string;
     dynamicElementSelector?: string;
@@ -8,6 +13,7 @@ export interface PaginationConfigModel {
         min: number;
     };
     animationLength: number;
+    on?: EventModel;
 }
 export interface hiddenButtonsConfigModel {
     min: number;

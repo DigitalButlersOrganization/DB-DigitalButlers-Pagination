@@ -16,6 +16,9 @@ export interface PaginationConfigModel {
 	};
 	animationLength: number;
 	on?: EventModel;
+	previousButtonClassnames?: string[];
+	nextButtonClassnames?: string[];
+	regularButtonClassnames?: string[];
 	// tabbuttonsListSelector: string,
 	// deletableTabs: boolean,
 	// initialTab: number,

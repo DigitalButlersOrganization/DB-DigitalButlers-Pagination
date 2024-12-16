@@ -14,6 +14,9 @@ export class Pagination {
 	previousButtonInner: string;
 	nextButtonInner: string;
 	itemsPerPage: number;
+	previousButtonClassnames: string[];
+	nextButtonClassnames: string[];
+	regularButtonClassnames: string[];
 	url: URL;
 	currentPage: number;
 	totalPages: number;
@@ -34,6 +37,9 @@ export class Pagination {
 			dynamicElementSelector = '.w-dyn-item[role="listitem"]',
 			previousButtonInner = 'Prev',
 			nextButtonInner = 'Next',
+			previousButtonClassnames = [],
+			nextButtonClassnames = [],
+			regularButtonClassnames = [],
 			itemsPerPage,
 			hiddenButtons = {
 				min: 6,
@@ -59,6 +65,9 @@ export class Pagination {
 		this.emptyMapInner = '...';
 		this.hiddenButtons = hiddenButtons;
 		this.on = on;
+		this.previousButtonClassnames = previousButtonClassnames;
+		this.nextButtonClassnames = nextButtonClassnames;
+		this.regularButtonClassnames = regularButtonClassnames;
 
 		this.init();
 	}
@@ -152,10 +161,13 @@ export class Pagination {
 		button.setAttribute('aria-label', label);
 		button.setAttribute('type', 'button');
 		if (label === 'Prev page') {
+			button.classList.add(...this.previousButtonClassnames);
 			this.prevButton = button;
 		} else if (label === 'Next page') {
+			button.classList.add(...this.nextButtonClassnames);
 			this.nextButton = button;
 		} else {
+			button.classList.add(...this.regularButtonClassnames);
 			this.buttons.push(button);
 		}
 		(this.paginationWrapper as HTMLElement).append(button);
