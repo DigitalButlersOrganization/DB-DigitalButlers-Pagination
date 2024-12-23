@@ -5,16 +5,20 @@ export interface EventModel {
 	change?: (pagination: Pagination) => {};
 }
 
+export type PageNumberTransformer = (number: number) => string;
+
 export interface PaginationConfigModel {
 	paginationWrapperSelector?: string;
 	dynamicElementSelector?: string;
 	previousButtonInner?: string;
 	nextButtonInner?: string;
 	itemsPerPage: number;
+	pageNumberTransformer?: PageNumberTransformer;
+	emptyMapInner?: string;
 	hiddenButtons?: {
 		min: number;
 	};
-	animationLength: number;
+	// animationLength?: number;
 	on?: EventModel;
 	previousButtonClassnames?: string[];
 	nextButtonClassnames?: string[];

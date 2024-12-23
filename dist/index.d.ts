@@ -9,6 +9,9 @@ export declare class Pagination {
     previousButtonInner: string;
     nextButtonInner: string;
     itemsPerPage: number;
+    previousButtonClassnames: string[];
+    nextButtonClassnames: string[];
+    regularButtonClassnames: string[];
     url: URL;
     currentPage: number;
     totalPages: number;
@@ -20,7 +23,7 @@ export declare class Pagination {
     dynamicItemSelector: any;
     hiddenButtons: hiddenButtonsConfigModel;
     on: EventModel;
-    constructor(component: string | HTMLElement | undefined, { paginationWrapperSelector, dynamicElementSelector, previousButtonInner, nextButtonInner, itemsPerPage, hiddenButtons, on, }: PaginationConfigModel);
+    constructor(component: string | HTMLElement | undefined, { paginationWrapperSelector, dynamicElementSelector, previousButtonInner, nextButtonInner, previousButtonClassnames, nextButtonClassnames, regularButtonClassnames, itemsPerPage, hiddenButtons, on, }: PaginationConfigModel);
     init: () => void;
     initVariables: () => void;
     createButtonsMap: () => void;

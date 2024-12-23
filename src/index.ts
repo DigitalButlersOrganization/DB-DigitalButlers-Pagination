@@ -3,7 +3,14 @@ import { CLASSES } from './constants';
 
 import './style.scss';
 
-import { EventModel, PaginationConfigModel, addButtonsPropertiesModel, hiddenButtonsConfigModel, pageMapItemModel } from './interfaces';
+import {
+	EventModel,
+	PageNumberTransformer,
+	PaginationConfigModel,
+	addButtonsPropertiesModel,
+	hiddenButtonsConfigModel,
+	pageMapItemModel,
+} from './interfaces';
 
 export class Pagination {
 	component: HTMLElement;
@@ -27,6 +34,7 @@ export class Pagination {
 	buttonsMap: any[];
 	dynamicItemSelector: any;
 	hiddenButtons: hiddenButtonsConfigModel;
+	pageNumberTransformer: PageNumberTransformer;
 	on: EventModel;
 
 	// eslint-disable-next-line default-param-last
@@ -41,6 +49,8 @@ export class Pagination {
 			nextButtonClassnames = [],
 			regularButtonClassnames = [],
 			itemsPerPage,
+			emptyMapInner = '...',
+			pageNumberTransformer = (number: number) => number.toString(),
 			hiddenButtons = {
 				min: 6,
 			},
@@ -62,8 +72,9 @@ export class Pagination {
 		this.prevButton = undefined;
 		this.nextButton = undefined;
 		this.buttonsMap = [];
-		this.emptyMapInner = '...';
+		this.emptyMapInner = emptyMapInner;
 		this.hiddenButtons = hiddenButtons;
+		this.pageNumberTransformer = pageNumberTransformer;
 		this.on = on;
 		this.previousButtonClassnames = previousButtonClassnames;
 		this.nextButtonClassnames = nextButtonClassnames;
@@ -156,6 +167,7 @@ export class Pagination {
 
 	addButton = ({ content, label }: addButtonsPropertiesModel) => {
 		const button = document.createElement('button');
+
 		button.innerHTML = content;
 		button.classList.add(CLASSES.BUTTON);
 		button.setAttribute('aria-label', label);
@@ -199,7 +211,7 @@ export class Pagination {
 			if (buttonMapItem.visible) {
 				button.classList.remove(CLASSES.EMPTY_PLACE);
 				// eslint-disable-next-line no-param-reassign
-				button.textContent = buttonMapItem.page;
+				button.textContent = this.pageNumberTransformer(buttonMapItem.page);
 			} else {
 				button.classList.add(CLASSES.EMPTY_PLACE);
 				// eslint-disable-next-line no-param-reassign

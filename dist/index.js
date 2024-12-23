@@ -1,7 +1,7 @@
-var p = Object.defineProperty;
-var d = (h, t, e) => t in h ? p(h, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : h[t] = e;
-var s = (h, t, e) => (d(h, typeof t != "symbol" ? t + "" : t, e), e);
-const o = "js--", a = {
+var m = Object.defineProperty;
+var P = (h, t, s) => t in h ? m(h, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : h[t] = s;
+var i = (h, t, s) => (P(h, typeof t != "symbol" ? t + "" : t, s), s);
+const o = "js--", n = {
   ACTIVE: `${o}active`,
   UNACTIVE: `${o}unactive`,
   VISIBLE: `${o}visible`,
@@ -10,48 +10,51 @@ const o = "js--", a = {
   EMPTY_PLACE: `${o}pagination-empty-place`,
   HIDDEN: `${o}hidden-by-pagination`
 };
-class m {
-  constructor(t = '[data-pagination="wrapper"]', { paginationWrapperSelector: e = '[data-pagination="container"]', dynamicElementSelector: i = '.w-dyn-item[role="listitem"]', previousButtonInner: n = "Prev", nextButtonInner: r = "Next", itemsPerPage: l, hiddenButtons: u = {
+class B {
+  constructor(t = '[data-pagination="wrapper"]', { paginationWrapperSelector: s = '[data-pagination="container"]', dynamicElementSelector: e = '.w-dyn-item[role="listitem"]', previousButtonInner: a = "Prev", nextButtonInner: r = "Next", previousButtonClassnames: l = [], nextButtonClassnames: u = [], regularButtonClassnames: c = [], itemsPerPage: p, hiddenButtons: d = {
     min: 6
-  }, on: c = {} }) {
-    s(this, "component");
-    s(this, "paginationWrapperSelector");
-    s(this, "paginationWrapper");
-    s(this, "dynamicElementSelector");
-    s(this, "dynamicElements");
-    s(this, "previousButtonInner");
-    s(this, "nextButtonInner");
-    s(this, "itemsPerPage");
-    s(this, "url");
-    s(this, "currentPage");
-    s(this, "totalPages");
-    s(this, "buttons");
-    s(this, "prevButton");
-    s(this, "nextButton");
-    s(this, "emptyMapInner");
-    s(this, "buttonsMap");
-    s(this, "dynamicItemSelector");
-    s(this, "hiddenButtons");
-    s(this, "on");
-    s(this, "init", () => {
-      var e, i, n;
+  }, on: g = {} }) {
+    i(this, "component");
+    i(this, "paginationWrapperSelector");
+    i(this, "paginationWrapper");
+    i(this, "dynamicElementSelector");
+    i(this, "dynamicElements");
+    i(this, "previousButtonInner");
+    i(this, "nextButtonInner");
+    i(this, "itemsPerPage");
+    i(this, "previousButtonClassnames");
+    i(this, "nextButtonClassnames");
+    i(this, "regularButtonClassnames");
+    i(this, "url");
+    i(this, "currentPage");
+    i(this, "totalPages");
+    i(this, "buttons");
+    i(this, "prevButton");
+    i(this, "nextButton");
+    i(this, "emptyMapInner");
+    i(this, "buttonsMap");
+    i(this, "dynamicItemSelector");
+    i(this, "hiddenButtons");
+    i(this, "on");
+    i(this, "init", () => {
+      var s, e, a;
       const t = this.url.searchParams.get("page");
-      this.currentPage = t ? +t : 1, this.paginationWrapper = (e = this.component.querySelector(this.paginationWrapperSelector)) != null ? e : void 0, this.paginationWrapper && (this.initVariables(), this.paginationWrapper.addEventListener("click", this.clickHandler)), (n = (i = this.on) == null ? void 0 : i.afterInit) == null || n.call(i, this);
+      this.currentPage = t ? +t : 1, this.paginationWrapper = (s = this.component.querySelector(this.paginationWrapperSelector)) != null ? s : void 0, this.paginationWrapper && (this.initVariables(), this.paginationWrapper.addEventListener("click", this.clickHandler)), (a = (e = this.on) == null ? void 0 : e.afterInit) == null || a.call(e, this);
     });
-    s(this, "initVariables", () => {
+    i(this, "initVariables", () => {
       this.dynamicElements = Array.from(this.component.querySelectorAll(this.dynamicElementSelector)), this.totalPages = Math.ceil(this.dynamicElements.length / this.itemsPerPage), this.createButtonsMap(), this.addCustomButtons(), this.goToCurrent();
     });
-    s(this, "createButtonsMap", () => {
-      const t = [], e = new Array(this.totalPages).fill("").map((n, r) => r + 1), i = (n) => n === 1 || n === this.totalPages || n >= this.currentPage - 1 && n <= this.currentPage + 1;
-      e.forEach((n, r) => {
+    i(this, "createButtonsMap", () => {
+      const t = [], s = new Array(this.totalPages).fill("").map((a, r) => r + 1), e = (a) => a === 1 || a === this.totalPages || a >= this.currentPage - 1 && a <= this.currentPage + 1;
+      s.forEach((a, r) => {
         const l = {
-          page: n,
+          page: a,
           current: r + 1 === this.currentPage
         };
-        i(n) || this.buttons.length < this.hiddenButtons.min ? t.push({
+        e(a) || this.buttons.length < this.hiddenButtons.min ? t.push({
           ...l,
           visible: !0
-        }) : i(e[r + 1]) && i(e[r - 1]) ? t.push({
+        }) : e(s[r + 1]) && e(s[r - 1]) ? t.push({
           ...l,
           visible: !0
         }) : t.push({
@@ -60,8 +63,8 @@ class m {
         });
       }), this.buttonsMap = t;
     });
-    s(this, "addCustomButtons", () => {
-      this.totalPages > 1 ? (this.paginationWrapper.classList.remove(a.UNACTIVE), this.addButton({
+    i(this, "addCustomButtons", () => {
+      this.totalPages > 1 ? (this.paginationWrapper.classList.remove(n.UNACTIVE), this.addButton({
         label: "Prev page",
         content: this.previousButtonInner
       }), this.buttonsMap.forEach(({ page: t }) => {
@@ -72,56 +75,56 @@ class m {
       }), this.addButton({
         label: "Next page",
         content: this.nextButtonInner
-      })) : this.paginationWrapper.classList.add(a.UNACTIVE), this.createButtonsMap(), this.updateButtonsAttrs(), this.addRelLinks();
+      })) : this.paginationWrapper.classList.add(n.UNACTIVE), this.createButtonsMap(), this.updateButtonsAttrs(), this.addRelLinks();
     });
-    s(this, "addButton", ({ content: t, label: e }) => {
-      const i = document.createElement("button");
-      i.innerHTML = t, i.classList.add(a.BUTTON), i.setAttribute("aria-label", e), i.setAttribute("type", "button"), e === "Prev page" ? this.prevButton = i : e === "Next page" ? this.nextButton = i : this.buttons.push(i), this.paginationWrapper.append(i);
+    i(this, "addButton", ({ content: t, label: s }) => {
+      const e = document.createElement("button");
+      e.innerHTML = t, e.classList.add(n.BUTTON), e.setAttribute("aria-label", s), e.setAttribute("type", "button"), s === "Prev page" ? (e.classList.add(...this.previousButtonClassnames), this.prevButton = e) : s === "Next page" ? (e.classList.add(...this.nextButtonClassnames), this.nextButton = e) : (e.classList.add(...this.regularButtonClassnames), this.buttons.push(e)), this.paginationWrapper.append(e);
     });
-    s(this, "updateButtonsAttrs", () => {
-      this.currentPage === 1 ? this.makeDisable(this.prevButton) : this.makeEnable(this.prevButton), this.currentPage === this.totalPages ? this.makeDisable(this.nextButton) : this.makeEnable(this.nextButton), this.buttons.forEach((t, e) => {
-        const i = this.buttonsMap[e];
-        e + 1 === this.currentPage ? t.classList.add(a.CURRENT) : t.classList.remove(a.CURRENT), !i.visible || i.current ? this.makeDisable(t) : this.makeEnable(t), i.visible ? (t.classList.remove(a.EMPTY_PLACE), t.textContent = i.page) : (t.classList.add(a.EMPTY_PLACE), t.textContent = this.emptyMapInner), i.current ? t.classList.add(a.CURRENT) : t.classList.remove(a.CURRENT);
+    i(this, "updateButtonsAttrs", () => {
+      this.currentPage === 1 ? this.makeDisable(this.prevButton) : this.makeEnable(this.prevButton), this.currentPage === this.totalPages ? this.makeDisable(this.nextButton) : this.makeEnable(this.nextButton), this.buttons.forEach((t, s) => {
+        const e = this.buttonsMap[s];
+        s + 1 === this.currentPage ? t.classList.add(n.CURRENT) : t.classList.remove(n.CURRENT), !e.visible || e.current ? this.makeDisable(t) : this.makeEnable(t), e.visible ? (t.classList.remove(n.EMPTY_PLACE), t.textContent = e.page) : (t.classList.add(n.EMPTY_PLACE), t.textContent = this.emptyMapInner), e.current ? t.classList.add(n.CURRENT) : t.classList.remove(n.CURRENT);
       });
     });
-    s(this, "makeDisable", (t) => {
+    i(this, "makeDisable", (t) => {
       t && (t.setAttribute("disabled", "true"), t.setAttribute("tabindex", "-1"));
     });
-    s(this, "makeEnable", (t) => {
+    i(this, "makeEnable", (t) => {
       t && (t.removeAttribute("disabled"), t.setAttribute("tabindex", "0"));
     });
-    s(this, "update", () => {
+    i(this, "update", () => {
       this.paginationWrapper.innerHTML = "", this.buttons = [], this.currentPage = 1, this.initVariables();
     });
-    s(this, "goToCurrent", () => {
-      var t, e;
-      this.dynamicElements.forEach((i, n) => {
-        Math.ceil((n + 1) / this.itemsPerPage) === this.currentPage ? (i.classList.remove(a.HIDDEN), i.removeAttribute("style"), i.removeAttribute("inert")) : (i.classList.add(a.HIDDEN), i.style.display = "none", i.setAttribute("inert", "true"));
-      }), this.addPageParam(), this.addRelLinks(), (e = (t = this.on) == null ? void 0 : t.change) == null || e.call(t, this);
+    i(this, "goToCurrent", () => {
+      var t, s;
+      this.dynamicElements.forEach((e, a) => {
+        Math.ceil((a + 1) / this.itemsPerPage) === this.currentPage ? (e.classList.remove(n.HIDDEN), e.removeAttribute("style"), e.removeAttribute("inert")) : (e.classList.add(n.HIDDEN), e.style.display = "none", e.setAttribute("inert", "true"));
+      }), this.addPageParam(), this.addRelLinks(), (s = (t = this.on) == null ? void 0 : t.change) == null || s.call(t, this);
     });
-    s(this, "addPageParam", () => {
+    i(this, "addPageParam", () => {
       this.url = new URL(window.location.href), this.url.searchParams.set("page", this.currentPage.toString()), window.history.pushState({}, "", this.url.href);
     });
-    s(this, "clickHandler", (t) => {
-      const e = t.target.closest(".js--pagination-button");
-      if (e && e.getAttribute("disabled") !== "true") {
-        const i = e.getAttribute("aria-label");
-        i === "Prev page" ? this.currentPage -= 1 : i === "Next page" ? this.currentPage += 1 : this.currentPage = +i.split(" ")[1], this.goToCurrent(), this.createButtonsMap(), this.updateButtonsAttrs();
+    i(this, "clickHandler", (t) => {
+      const s = t.target.closest(".js--pagination-button");
+      if (s && s.getAttribute("disabled") !== "true") {
+        const e = s.getAttribute("aria-label");
+        e === "Prev page" ? this.currentPage -= 1 : e === "Next page" ? this.currentPage += 1 : this.currentPage = +e.split(" ")[1], this.goToCurrent(), this.createButtonsMap(), this.updateButtonsAttrs();
       }
     });
-    s(this, "addRelLinks", () => {
-      if (document.head.querySelectorAll('link[rel="prev"], link[rel="next"]').forEach((e) => e.remove()), this.currentPage > 1) {
-        const e = document.createElement("link");
-        e.setAttribute("rel", "prev"), e.setAttribute("href", `${this.url.origin + this.url.pathname}?page=${this.currentPage - 1}`), document.head.append(e);
+    i(this, "addRelLinks", () => {
+      if (document.head.querySelectorAll('link[rel="prev"], link[rel="next"]').forEach((s) => s.remove()), this.currentPage > 1) {
+        const s = document.createElement("link");
+        s.setAttribute("rel", "prev"), s.setAttribute("href", `${this.url.origin + this.url.pathname}?page=${this.currentPage - 1}`), document.head.append(s);
       }
       if (this.currentPage < this.totalPages) {
-        const e = document.createElement("link");
-        e.setAttribute("rel", "next"), e.setAttribute("href", `${this.url.origin + this.url.pathname}?page=${this.currentPage + 1}`), document.head.append(e);
+        const s = document.createElement("link");
+        s.setAttribute("rel", "next"), s.setAttribute("href", `${this.url.origin + this.url.pathname}?page=${this.currentPage + 1}`), document.head.append(s);
       }
     });
-    this.component = typeof t == "string" ? document.querySelector(t) : t, this.paginationWrapperSelector = e, this.paginationWrapper = void 0, this.dynamicElementSelector = i, this.dynamicElements = [], this.previousButtonInner = n, this.nextButtonInner = r, this.itemsPerPage = l, this.url = new URL(window.location.href), this.currentPage = 1, this.totalPages = 1, this.buttons = [], this.prevButton = void 0, this.nextButton = void 0, this.buttonsMap = [], this.emptyMapInner = "...", this.hiddenButtons = u, this.on = c, this.init();
+    this.component = typeof t == "string" ? document.querySelector(t) : t, this.paginationWrapperSelector = s, this.paginationWrapper = void 0, this.dynamicElementSelector = e, this.dynamicElements = [], this.previousButtonInner = a, this.nextButtonInner = r, this.itemsPerPage = p, this.url = new URL(window.location.href), this.currentPage = 1, this.totalPages = 1, this.buttons = [], this.prevButton = void 0, this.nextButton = void 0, this.buttonsMap = [], this.emptyMapInner = "...", this.hiddenButtons = d, this.on = g, this.previousButtonClassnames = l, this.nextButtonClassnames = u, this.regularButtonClassnames = c, this.init();
   }
 }
 export {
-  m as Pagination
+  B as Pagination
 };

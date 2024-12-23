@@ -14,6 +14,9 @@ export interface PaginationConfigModel {
     };
     animationLength: number;
     on?: EventModel;
+    previousButtonClassnames?: string[];
+    nextButtonClassnames?: string[];
+    regularButtonClassnames?: string[];
 }
 export interface hiddenButtonsConfigModel {
     min: number;

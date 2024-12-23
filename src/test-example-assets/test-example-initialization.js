@@ -7,6 +7,7 @@ const pagination = new Pagination(component, {
 	paginationWrapperSelector: '.pagination-wrapper',
 	dynamicElementSelector: '.dynamic-element',
 	animationLength: 1000,
+
 	on: {
 		afterInit: (self) => {
 			console.log(self);
