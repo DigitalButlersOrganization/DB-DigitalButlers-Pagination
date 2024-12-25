@@ -286,6 +286,7 @@ export class Pagination {
 			this.goToCurrent();
 			this.createButtonsMap();
 			this.updateButtonsAttrs();
+			this.on?.click?.(this);
 		}
 	};
 

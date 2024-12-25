@@ -1,6 +1,6 @@
-var m = Object.defineProperty;
-var P = (h, t, s) => t in h ? m(h, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : h[t] = s;
-var i = (h, t, s) => (P(h, typeof t != "symbol" ? t + "" : t, s), s);
+var B = Object.defineProperty;
+var E = (h, t, s) => t in h ? B(h, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : h[t] = s;
+var i = (h, t, s) => (E(h, typeof t != "symbol" ? t + "" : t, s), s);
 const o = "js--", n = {
   ACTIVE: `${o}active`,
   UNACTIVE: `${o}unactive`,
@@ -10,10 +10,10 @@ const o = "js--", n = {
   EMPTY_PLACE: `${o}pagination-empty-place`,
   HIDDEN: `${o}hidden-by-pagination`
 };
-class B {
-  constructor(t = '[data-pagination="wrapper"]', { paginationWrapperSelector: s = '[data-pagination="container"]', dynamicElementSelector: e = '.w-dyn-item[role="listitem"]', previousButtonInner: a = "Prev", nextButtonInner: r = "Next", previousButtonClassnames: l = [], nextButtonClassnames: u = [], regularButtonClassnames: c = [], itemsPerPage: p, hiddenButtons: d = {
+class v {
+  constructor(t = '[data-pagination="wrapper"]', { paginationWrapperSelector: s = '[data-pagination="container"]', dynamicElementSelector: e = '.w-dyn-item[role="listitem"]', previousButtonInner: a = "Prev", nextButtonInner: r = "Next", previousButtonClassnames: l = [], nextButtonClassnames: u = [], regularButtonClassnames: c = [], itemsPerPage: p, emptyMapInner: d = "...", pageNumberTransformer: g = (b) => b.toString(), hiddenButtons: m = {
     min: 6
-  }, on: g = {} }) {
+  }, on: P = {} }) {
     i(this, "component");
     i(this, "paginationWrapperSelector");
     i(this, "paginationWrapper");
@@ -35,6 +35,7 @@ class B {
     i(this, "buttonsMap");
     i(this, "dynamicItemSelector");
     i(this, "hiddenButtons");
+    i(this, "pageNumberTransformer");
     i(this, "on");
     i(this, "init", () => {
       var s, e, a;
@@ -84,7 +85,7 @@ class B {
     i(this, "updateButtonsAttrs", () => {
       this.currentPage === 1 ? this.makeDisable(this.prevButton) : this.makeEnable(this.prevButton), this.currentPage === this.totalPages ? this.makeDisable(this.nextButton) : this.makeEnable(this.nextButton), this.buttons.forEach((t, s) => {
         const e = this.buttonsMap[s];
-        s + 1 === this.currentPage ? t.classList.add(n.CURRENT) : t.classList.remove(n.CURRENT), !e.visible || e.current ? this.makeDisable(t) : this.makeEnable(t), e.visible ? (t.classList.remove(n.EMPTY_PLACE), t.textContent = e.page) : (t.classList.add(n.EMPTY_PLACE), t.textContent = this.emptyMapInner), e.current ? t.classList.add(n.CURRENT) : t.classList.remove(n.CURRENT);
+        s + 1 === this.currentPage ? t.classList.add(n.CURRENT) : t.classList.remove(n.CURRENT), !e.visible || e.current ? this.makeDisable(t) : this.makeEnable(t), e.visible ? (t.classList.remove(n.EMPTY_PLACE), t.textContent = this.pageNumberTransformer(e.page)) : (t.classList.add(n.EMPTY_PLACE), t.textContent = this.emptyMapInner), e.current ? t.classList.add(n.CURRENT) : t.classList.remove(n.CURRENT);
       });
     });
     i(this, "makeDisable", (t) => {
@@ -122,9 +123,9 @@ class B {
         s.setAttribute("rel", "next"), s.setAttribute("href", `${this.url.origin + this.url.pathname}?page=${this.currentPage + 1}`), document.head.append(s);
       }
     });
-    this.component = typeof t == "string" ? document.querySelector(t) : t, this.paginationWrapperSelector = s, this.paginationWrapper = void 0, this.dynamicElementSelector = e, this.dynamicElements = [], this.previousButtonInner = a, this.nextButtonInner = r, this.itemsPerPage = p, this.url = new URL(window.location.href), this.currentPage = 1, this.totalPages = 1, this.buttons = [], this.prevButton = void 0, this.nextButton = void 0, this.buttonsMap = [], this.emptyMapInner = "...", this.hiddenButtons = d, this.on = g, this.previousButtonClassnames = l, this.nextButtonClassnames = u, this.regularButtonClassnames = c, this.init();
+    this.component = typeof t == "string" ? document.querySelector(t) : t, this.paginationWrapperSelector = s, this.paginationWrapper = void 0, this.dynamicElementSelector = e, this.dynamicElements = [], this.previousButtonInner = a, this.nextButtonInner = r, this.itemsPerPage = p, this.url = new URL(window.location.href), this.currentPage = 1, this.totalPages = 1, this.buttons = [], this.prevButton = void 0, this.nextButton = void 0, this.buttonsMap = [], this.emptyMapInner = d, this.hiddenButtons = m, this.pageNumberTransformer = g, this.on = P, this.previousButtonClassnames = l, this.nextButtonClassnames = u, this.regularButtonClassnames = c, this.init();
   }
 }
 export {
-  B as Pagination
+  v as Pagination
 };

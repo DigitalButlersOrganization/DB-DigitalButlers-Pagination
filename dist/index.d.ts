@@ -1,5 +1,5 @@
 import './style.scss';
-import { EventModel, PaginationConfigModel, addButtonsPropertiesModel, hiddenButtonsConfigModel } from './interfaces';
+import { EventModel, PageNumberTransformer, PaginationConfigModel, addButtonsPropertiesModel, hiddenButtonsConfigModel } from './interfaces';
 export declare class Pagination {
     component: HTMLElement;
     paginationWrapperSelector: string;
@@ -22,8 +22,9 @@ export declare class Pagination {
     buttonsMap: any[];
     dynamicItemSelector: any;
     hiddenButtons: hiddenButtonsConfigModel;
+    pageNumberTransformer: PageNumberTransformer;
     on: EventModel;
-    constructor(component: string | HTMLElement | undefined, { paginationWrapperSelector, dynamicElementSelector, previousButtonInner, nextButtonInner, previousButtonClassnames, nextButtonClassnames, regularButtonClassnames, itemsPerPage, hiddenButtons, on, }: PaginationConfigModel);
+    constructor(component: string | HTMLElement | undefined, { paginationWrapperSelector, dynamicElementSelector, previousButtonInner, nextButtonInner, previousButtonClassnames, nextButtonClassnames, regularButtonClassnames, itemsPerPage, emptyMapInner, pageNumberTransformer, hiddenButtons, on, }: PaginationConfigModel);
     init: () => void;
     initVariables: () => void;
     createButtonsMap: () => void;
