@@ -55,6 +55,12 @@ _Type:_ `string`
 _Default:_ `'...'`
 _Description:_ Inner content for empty map items.
 
+### `devMode`
+
+_Type:_ `boolean`
+_Default:_ `false`
+_Description:_ Enable dev mode.
+
 ### `pageNumberTransformer`
 
 _Type:_ `(number: number) => string`

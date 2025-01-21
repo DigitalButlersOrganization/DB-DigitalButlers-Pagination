@@ -2,6 +2,7 @@ import { Pagination } from './index';
 export interface EventModel {
     afterInit?: (pagination: Pagination) => {};
     change?: (pagination: Pagination) => {};
+    click?: (pagination: Pagination) => {};
 }
 export type PageNumberTransformer = (number: number) => string;
 export interface PaginationConfigModel {

@@ -24,6 +24,7 @@ export interface PaginationConfigModel {
 	previousButtonClassnames?: string[];
 	nextButtonClassnames?: string[];
 	regularButtonClassnames?: string[];
+	devMode?: boolean;
 	// tabbuttonsListSelector: string,
 	// deletableTabs: boolean,
 	// initialTab: number,

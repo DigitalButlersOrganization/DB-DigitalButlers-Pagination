@@ -35,6 +35,7 @@ export class Pagination {
 	dynamicItemSelector: any;
 	hiddenButtons: hiddenButtonsConfigModel;
 	pageNumberTransformer: PageNumberTransformer;
+	devMode: boolean;
 	on: EventModel;
 
 	// eslint-disable-next-line default-param-last
@@ -55,6 +56,7 @@ export class Pagination {
 				min: 6,
 			},
 			on = {},
+			devMode: developmentMode = false,
 		}: PaginationConfigModel,
 	) {
 		this.component = typeof component === 'string' ? (document.querySelector(component) as HTMLElement) : component;
@@ -79,17 +81,33 @@ export class Pagination {
 		this.previousButtonClassnames = previousButtonClassnames;
 		this.nextButtonClassnames = nextButtonClassnames;
 		this.regularButtonClassnames = regularButtonClassnames;
+		this.devMode = developmentMode;
 
 		this.init();
 	}
 
 	init = () => {
+		if (!this.devMode && window.location.protocol === 'http:' && Boolean(window.location.port)) {
+			// eslint-disable-next-line no-console
+			console.warn(
+				'PAGINATION DEV MODE: Use option {devMode: true} for debugging. Read the docs https://www.npmjs.com/package/@digital-butlers/pagination | Используйте опцию {devMode: true} для отладки. Читай документацию https://www.npmjs.com/package/@digital-butlers/pagination',
+			);
+		}
+		if (this.devMode) {
+			// eslint-disable-next-line no-console
+			console.warn(
+				`PAGINATION DEV MODE: Pagination dev mode enabled! Read the docs https://www.npmjs.com/package/@digital-butlers/pagination | В пагинации включен режим разработчика! Читай документацию https://www.npmjs.com/package/@digital-butlers/pagination`,
+			);
+		}
 		const queryPage = this.url.searchParams.get('page');
 		this.currentPage = queryPage ? +queryPage : 1;
 		this.paginationWrapper = (this.component.querySelector(this.paginationWrapperSelector) as HTMLElement) ?? undefined;
 		if (this.paginationWrapper) {
 			this.initVariables();
 			this.paginationWrapper.addEventListener('click', this.clickHandler);
+		} else if (this.devMode) {
+			// eslint-disable-next-line no-console
+			console.warn('PAGINATION DEV MODE: Pagination wrapper not found | Обертка пагинации не найдена');
 		}
 		this.on?.afterInit?.(this);
 	};
