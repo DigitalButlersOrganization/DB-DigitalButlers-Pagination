@@ -98,3 +98,11 @@ _Description:_ Callback will be started after page change event.
 _Type:_ `function`
 _Default:_ `undefined`
 _Description:_ Callback will be started after pagination click event.
+
+#### Properties
+
+### `openedElements`
+
+_Type:_ `HTMLElement[]`
+_Default:_ `[]`
+_Description:_ Array of opened elements.

@@ -23,8 +23,9 @@ export declare class Pagination {
     dynamicItemSelector: any;
     hiddenButtons: hiddenButtonsConfigModel;
     pageNumberTransformer: PageNumberTransformer;
+    devMode: boolean;
     on: EventModel;
-    constructor(component: string | HTMLElement | undefined, { paginationWrapperSelector, dynamicElementSelector, previousButtonInner, nextButtonInner, previousButtonClassnames, nextButtonClassnames, regularButtonClassnames, itemsPerPage, emptyMapInner, pageNumberTransformer, hiddenButtons, on, }: PaginationConfigModel);
+    constructor(component: string | HTMLElement | undefined, { paginationWrapperSelector, dynamicElementSelector, previousButtonInner, nextButtonInner, previousButtonClassnames, nextButtonClassnames, regularButtonClassnames, itemsPerPage, emptyMapInner, pageNumberTransformer, hiddenButtons, on, devMode: developmentMode, }: PaginationConfigModel);
     init: () => void;
     initVariables: () => void;
     createButtonsMap: () => void;

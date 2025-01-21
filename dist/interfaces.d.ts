@@ -20,6 +20,7 @@ export interface PaginationConfigModel {
     previousButtonClassnames?: string[];
     nextButtonClassnames?: string[];
     regularButtonClassnames?: string[];
+    devMode?: boolean;
 }
 export interface hiddenButtonsConfigModel {
     min: number;

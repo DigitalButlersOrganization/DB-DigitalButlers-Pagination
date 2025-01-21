@@ -18,6 +18,7 @@ export class Pagination {
 	paginationWrapper: HTMLElement | undefined;
 	dynamicElementSelector: string;
 	dynamicElements: HTMLElement[];
+	openedElements: HTMLElement[];
 	previousButtonInner: string;
 	nextButtonInner: string;
 	itemsPerPage: number;
@@ -64,6 +65,7 @@ export class Pagination {
 		this.paginationWrapper = undefined;
 		this.dynamicElementSelector = dynamicElementSelector;
 		this.dynamicElements = [];
+		this.openedElements = [];
 		this.previousButtonInner = previousButtonInner;
 		this.nextButtonInner = nextButtonInner;
 		this.itemsPerPage = itemsPerPage;
@@ -267,12 +269,14 @@ export class Pagination {
 	};
 
 	goToCurrent = () => {
+		this.openedElements = [];
 		this.dynamicElements.forEach((item, index) => {
 			const isActive = Math.ceil((index + 1) / this.itemsPerPage) === this.currentPage;
 			if (isActive) {
 				item.classList.remove(CLASSES.HIDDEN);
 				item.removeAttribute('style');
 				item.removeAttribute('inert');
+				this.openedElements.push(item);
 			} else {
 				item.classList.add(CLASSES.HIDDEN);
 				item.style.display = 'none';
