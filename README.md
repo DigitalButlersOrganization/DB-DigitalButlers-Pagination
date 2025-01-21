@@ -16,13 +16,13 @@ _Description:_ CSS selector for dynamic elements within the pagination.
 
 ### `previousButtonInner`
 
-_Type:_ `string`
+_Type:_ `string | Node`
 _Default:_ `'Prev'`
 _Description:_ Inner content for the previous button.
 
 ### `nextButtonInner`
 
-_Type:_ `string`
+_Type:_ `string | Node`
 _Default:_ `'Next'`
 _Description:_ Inner content for the next button.
 

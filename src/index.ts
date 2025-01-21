@@ -188,7 +188,11 @@ export class Pagination {
 	addButton = ({ content, label }: addButtonsPropertiesModel) => {
 		const button = document.createElement('button');
 
-		button.innerHTML = content;
+		if (typeof content === 'string') {
+			button.innerHTML = content;
+		} else if (content instanceof Node) {
+			button.append(content);
+		}
 		button.classList.add(CLASSES.BUTTON);
 		button.setAttribute('aria-label', label);
 		button.setAttribute('type', 'button');

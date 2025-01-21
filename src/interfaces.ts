@@ -45,6 +45,6 @@ export interface pageMapItemModel {
 }
 
 export interface addButtonsPropertiesModel {
-	content: string;
+	content: string | Node;
 	label: string;
 }
