@@ -6,6 +6,7 @@ export declare class Pagination {
     paginationWrapper: HTMLElement | undefined;
     dynamicElementSelector: string;
     dynamicElements: HTMLElement[];
+    openedElements: HTMLElement[];
     previousButtonInner: string;
     nextButtonInner: string;
     itemsPerPage: number;
