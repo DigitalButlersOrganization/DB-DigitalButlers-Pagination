@@ -19,8 +19,8 @@ export class Pagination {
 	dynamicElementSelector: string;
 	dynamicElements: HTMLElement[];
 	openedElements: HTMLElement[];
-	previousButtonInner: string;
-	nextButtonInner: string;
+	previousButtonInner: string | Node;
+	nextButtonInner: string | Node;
 	itemsPerPage: number;
 	previousButtonClassnames: string[];
 	nextButtonClassnames: string[];

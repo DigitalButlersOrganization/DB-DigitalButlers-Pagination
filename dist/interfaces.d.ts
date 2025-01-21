@@ -31,6 +31,6 @@ export interface pageMapItemModel {
     current: boolean;
 }
 export interface addButtonsPropertiesModel {
-    content: string;
+    content: string | Node;
     label: string;
 }

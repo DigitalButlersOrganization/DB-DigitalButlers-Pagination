@@ -1,6 +1,6 @@
 var B = Object.defineProperty;
-var v = (o, t, i) => t in o ? B(o, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : o[t] = i;
-var s = (o, t, i) => (v(o, typeof t != "symbol" ? t + "" : t, i), i);
+var f = (o, t, i) => t in o ? B(o, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : o[t] = i;
+var s = (o, t, i) => (f(o, typeof t != "symbol" ? t + "" : t, i), i);
 const r = "js--", u = {
   ACTIVE: `${r}active`,
   UNACTIVE: `${r}unactive`,
@@ -83,7 +83,7 @@ class A {
     });
     s(this, "addButton", ({ content: t, label: i }) => {
       const e = document.createElement("button");
-      e.innerHTML = t, e.classList.add(u.BUTTON), e.setAttribute("aria-label", i), e.setAttribute("type", "button"), i === "Prev page" ? (e.classList.add(...this.previousButtonClassnames), this.prevButton = e) : i === "Next page" ? (e.classList.add(...this.nextButtonClassnames), this.nextButton = e) : (e.classList.add(...this.regularButtonClassnames), this.buttons.push(e)), this.paginationWrapper.append(e);
+      typeof t == "string" ? e.innerHTML = t : t instanceof Node && e.append(t), e.classList.add(u.BUTTON), e.setAttribute("aria-label", i), e.setAttribute("type", "button"), i === "Prev page" ? (e.classList.add(...this.previousButtonClassnames), this.prevButton = e) : i === "Next page" ? (e.classList.add(...this.nextButtonClassnames), this.nextButton = e) : (e.classList.add(...this.regularButtonClassnames), this.buttons.push(e)), this.paginationWrapper.append(e);
     });
     s(this, "updateButtonsAttrs", () => {
       this.currentPage === 1 ? this.makeDisable(this.prevButton) : this.makeEnable(this.prevButton), this.currentPage === this.totalPages ? this.makeDisable(this.nextButton) : this.makeEnable(this.nextButton), this.buttons.forEach((t, i) => {

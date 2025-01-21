@@ -11,8 +11,8 @@ export type PageNumberTransformer = (number: number) => string;
 export interface PaginationConfigModel {
 	paginationWrapperSelector?: string;
 	dynamicElementSelector?: string;
-	previousButtonInner?: string;
-	nextButtonInner?: string;
+	previousButtonInner?: string | Node;
+	nextButtonInner?: string | Node;
 	itemsPerPage: number;
 	pageNumberTransformer?: PageNumberTransformer;
 	emptyMapInner?: string;
