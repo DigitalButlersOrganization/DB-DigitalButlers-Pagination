@@ -1,108 +1,146 @@
-## API
+# Digital Butlers Pagination
 
-### Config Properties
+Библиотека для создания пагинации с гибкими настройками.
 
-### `paginationWrapperSelector`
+## Содержание
 
-_Type:_ `string`
-_Default:_ `'[data-pagination="container"]'`
-_Description:_ CSS selector for the pagination container.
+- [Установка](#установка)
+- [Быстрый старт](#быстрый-старт)
+- [Конфигурация](#конфигурация)
+- [Публичные методы](#публичные-методы)
+- [События](#события)
+- [CSS классы](#css-классы)
+- [TypeScript типы](#typescript-типы)
+- [Доступность](#доступность)
+- [URL параметры](#url-параметры)
 
-### `dynamicElementSelector`
+## Установка
 
-_Type:_ `string`
-_Default:_ `'.w-dyn-item[role="listitem"]'`
-_Description:_ CSS selector for dynamic elements within the pagination.
+```bash
+npm install @digital-butlers/pagination
+# или
+yarn add @digital-butlers/pagination
+# или
+pnpm add @digital-butlers/pagination
+```
 
-### `previousButtonInner`
+## Быстрый старт
 
-_Type:_ `string | Node`
-_Default:_ `'Prev'`
-_Description:_ Inner content for the previous button.
+```typescript
+import { Pagination } from '@digital-butlers/pagination';
+import '@digital-butlers/pagination/css';
 
-### `nextButtonInner`
+new Pagination('[data-pagination="wrapper"]', {
+	itemsPerPage: 10,
+});
+```
 
-_Type:_ `string | Node`
-_Default:_ `'Next'`
-_Description:_ Inner content for the next button.
+## Конфигурация
 
-### `previousButtonClassnames`
+| Параметр                    | Тип                          | По умолчанию                      | Описание                                            |
+| --------------------------- | ---------------------------- | --------------------------------- | --------------------------------------------------- |
+| `paginationWrapperSelector` | `string`                     | `'[data-pagination="container"]'` | CSS селектор контейнера пагинации                   |
+| `dynamicElementSelector`    | `string`                     | `'.w-dyn-item[role="listitem"]'`  | CSS селектор элементов для пагинации                |
+| `previousButtonInner`       | `string \| Node`             | `'Prev'`                          | Содержимое кнопки "Назад"                           |
+| `nextButtonInner`           | `string \| Node`             | `'Next'`                          | Содержимое кнопки "Вперед"                          |
+| `previousButtonClassnames`  | `string[]`                   | `[]`                              | Дополнительные классы для кнопки "Назад"            |
+| `nextButtonClassnames`      | `string[]`                   | `[]`                              | Дополнительные классы для кнопки "Вперед"           |
+| `regularButtonClassnames`   | `string[]`                   | `[]`                              | Дополнительные классы для кнопок с номерами         |
+| `itemsPerPage`              | `number`                     | -                                 | Количество элементов на странице                    |
+| `emptyMapInner`             | `string`                     | `'...'`                           | Текст для пропущенных номеров страниц               |
+| `pageNumberTransformer`     | `(number: number) => string` | `(n) => n.toString()`             | Функция преобразования номеров страниц              |
+| `hiddenButtons`             | `{ min: number }`            | `{ min: 6 }`                      | Минимальное количество видимых кнопок               |
+| `devMode`                   | `boolean`                    | `false`                           | Режим разработки с дополнительными предупреждениями |
 
-_Type:_ `string[]`
-_Default:_ `[]`
-_Description:_ Class names for the previous button.
+## Публичные методы
 
-### `nextButtonClassnames`
+| Метод            | Описание                          |
+| ---------------- | --------------------------------- |
+| `update()`       | Обновляет состояние пагинации     |
+| `goToCurrent()`  | Переходит на текущую страницу     |
+| `addPageParam()` | Добавляет параметр страницы в URL |
 
-_Type:_ `string[]`
-_Default:_ `[]`
-_Description:_ Class names for the next button.
+## События
 
-### `regularButtonClassnames`
+| Событие     | Параметры                  | Описание                       |
+| ----------- | -------------------------- | ------------------------------ |
+| `afterInit` | `(pagination: Pagination)` | Вызывается после инициализации |
+| `change`    | `(pagination: Pagination)` | Вызывается при смене страницы  |
+| `click`     | `(pagination: Pagination)` | Вызывается при клике на кнопку |
 
-_Type:_ `string[]`
-_Default:_ `[]`
-_Description:_ Class names for the regular buttons.
+```typescript
+new Pagination('[data-pagination="wrapper"]', {
+	itemsPerPage: 10,
+	on: {
+		afterInit: (pagination) => console.log('Инициализация завершена'),
+		change: (pagination) => console.log('Текущая страница:', pagination.currentPage),
+		click: (pagination) => console.log('Клик по кнопке'),
+	},
+});
+```
 
-### `itemsPerPage`
+## CSS классы
 
-_Type:_ `number`
-_Description:_ Number of items per page.
+| Класс                         | Описание                                |
+| ----------------------------- | --------------------------------------- |
+| `.js--pagination-button`      | Базовый класс для всех кнопок пагинации |
+| `.js--pagination-current`     | Класс для текущей активной страницы     |
+| `.js--pagination-empty-place` | Класс для пропущенных номеров страниц   |
+| `.js--unactive`               | Класс для неактивной пагинации          |
+| `.js--hidden-by-pagination`   | Класс для скрытых элементов             |
+| `.js--active`                 | Класс для активных элементов            |
+| `.js--visible`                | Класс для видимых элементов             |
 
-### `emptyMapInner`
+## TypeScript типы
 
-_Type:_ `string`
-_Default:_ `'...'`
-_Description:_ Inner content for empty map items.
+```typescript
+interface PaginationConfigModel {
+	paginationWrapperSelector?: string;
+	dynamicElementSelector?: string;
+	previousButtonInner?: string | Node;
+	nextButtonInner?: string | Node;
+	itemsPerPage: number;
+	pageNumberTransformer?: PageNumberTransformer;
+	emptyMapInner?: string;
+	hiddenButtons?: {
+		min: number;
+	};
+	on?: EventModel;
+	previousButtonClassnames?: string[];
+	nextButtonClassnames?: string[];
+	regularButtonClassnames?: string[];
+	devMode?: boolean;
+}
 
-### `devMode`
+interface EventModel {
+	afterInit?: (pagination: Pagination) => void;
+	change?: (pagination: Pagination) => void;
+	click?: (pagination: Pagination) => void;
+}
 
-_Type:_ `boolean`
-_Default:_ `false`
-_Description:_ Enable dev mode.
+type PageNumberTransformer = (number: number) => string;
+```
 
-### `pageNumberTransformer`
+## Доступность
 
-_Type:_ `(number: number) => string`
-_Default:_ `(number: number) => number.toString()`
-_Description:_ Function to transform page numbers.
+Библиотека автоматически добавляет:
 
-### `hiddenButtons`
+- `aria-label` для всех кнопок
+- `role="button"` для элементов навигации
+- Поддержку клавиатурной навигации
+- Атрибут `inert` для скрытых элементов
+- Атрибут `disabled` для неактивных кнопок
+- Корректные значения `tabindex`
 
-_Type:_ `hiddenButtonsConfigModel`
-_Default:_ `{ min: 6 }`
-_Description:_ Configuration for hidden buttons.
+## URL параметры
 
-### `on`
+Библиотека автоматически:
 
-_Type:_ `EventModel`
-_Default:_ `{}`
-_Description:_ Event callbacks for pagination events.
+- Добавляет параметр `page` в URL
+- Синхронизирует состояние с URL
+- Поддерживает навигацию по истории браузера
+- Добавляет `rel="prev"` и `rel="next"` для SEO
 
-#### Events callback config object
+## Лицензия
 
-### `afterInit`
-
-_Type:_ `function`
-_Default:_ `undefined`
-_Description:_ Callback will be started after pagination initialization.
-
-### `change`
-
-_Type:_ `function`
-_Default:_ `undefined`
-_Description:_ Callback will be started after page change event.
-
-### `click`
-
-_Type:_ `function`
-_Default:_ `undefined`
-_Description:_ Callback will be started after pagination click event.
-
-#### Properties
-
-### `openedElements`
-
-_Type:_ `HTMLElement[]`
-_Default:_ `[]`
-_Description:_ Array of opened elements.
+MIT
