@@ -15,6 +15,27 @@ import {
 
 export type { EventModel, PageNumberTransformer, PaginationConfigModel, ServerModeModel } from './interfaces';
 
+type PaginationConfigInput = PaginationConfigModel & {
+	serverMode?: ServerModeModel | boolean;
+	totalPages?: number;
+};
+
+const DEFAULT_PAGINATION_CONFIG: PaginationConfigInput = { itemsPerPage: 0 };
+
+const resolveServerMode = (config: PaginationConfigInput): { isServerModeEnabled: boolean; serverMode: ServerModeModel | undefined } => {
+	const { serverMode, totalPages } = config;
+
+	if (serverMode && typeof serverMode === 'object' && typeof serverMode.totalPages === 'number') {
+		return { isServerModeEnabled: true, serverMode };
+	}
+
+	if (serverMode === true && typeof totalPages === 'number') {
+		return { isServerModeEnabled: true, serverMode: { totalPages } };
+	}
+
+	return { isServerModeEnabled: false, serverMode: undefined };
+};
+
 export class Pagination {
 	component: HTMLElement;
 	paginationWrapperSelector: string;
@@ -40,13 +61,13 @@ export class Pagination {
 	hiddenButtons: hiddenButtonsConfigModel;
 	pageNumberTransformer: PageNumberTransformer;
 	devMode: boolean;
+	isServerModeEnabled: boolean;
 	serverMode: ServerModeModel | undefined;
 	on: EventModel;
 
 	// eslint-disable-next-line default-param-last
-	constructor(
-		component: string | HTMLElement = '[data-pagination="wrapper"]',
-		{
+	constructor(component: string | HTMLElement = '[data-pagination="wrapper"]', config: PaginationConfigInput = DEFAULT_PAGINATION_CONFIG) {
+		const {
 			paginationWrapperSelector = '[data-pagination="container"]',
 			dynamicElementSelector = '.w-dyn-item[role="listitem"]',
 			previousButtonInner = 'Prev',
@@ -55,7 +76,6 @@ export class Pagination {
 			nextButtonClassnames = [],
 			regularButtonClassnames = [],
 			itemsPerPage = 0,
-			serverMode,
 			emptyMapInner = '...',
 			pageNumberTransformer = (number: number) => number.toString(),
 			hiddenButtons = {
@@ -63,8 +83,9 @@ export class Pagination {
 			},
 			on = {},
 			devMode: developmentMode = false,
-		}: PaginationConfigModel,
-	) {
+		} = config;
+		const resolvedServerMode = resolveServerMode(config);
+
 		this.component = typeof component === 'string' ? (document.querySelector(component) as HTMLElement) : component;
 		this.paginationWrapperSelector = paginationWrapperSelector;
 		this.paginationWrapper = undefined;
@@ -74,7 +95,8 @@ export class Pagination {
 		this.previousButtonInner = previousButtonInner;
 		this.nextButtonInner = nextButtonInner;
 		this.itemsPerPage = itemsPerPage;
-		this.serverMode = serverMode;
+		this.isServerModeEnabled = resolvedServerMode.isServerModeEnabled;
+		this.serverMode = resolvedServerMode.serverMode;
 		this.url = new URL(window.location.href);
 		this.currentPage = 1;
 		this.totalPages = 1;
@@ -107,6 +129,12 @@ export class Pagination {
 				`PAGINATION DEV MODE: Pagination dev mode enabled! Read the docs https://www.npmjs.com/package/@digital-butlers/pagination | В пагинации включен режим разработчика! Читай документацию https://www.npmjs.com/package/@digital-butlers/pagination`,
 			);
 		}
+		if (this.devMode && this.isServerModeEnabled && !this.serverMode) {
+			// eslint-disable-next-line no-console
+			console.warn(
+				'PAGINATION DEV MODE: serverMode is enabled but totalPages is missing. Pass serverMode: { totalPages: number } | serverMode включен, но totalPages не передан',
+			);
+		}
 		const queryPage = this.url.searchParams.get('page');
 		this.currentPage = queryPage ? +queryPage : 1;
 		this.paginationWrapper = (this.component.querySelector(this.paginationWrapperSelector) as HTMLElement) ?? undefined;
@@ -121,9 +149,8 @@ export class Pagination {
 	};
 
 	initVariables = () => {
-		if (this.serverMode) {
-			this.dynamicElements = [];
-			this.totalPages = this.serverMode.totalPages;
+		if (this.isServerModeEnabled) {
+			this.totalPages = this.serverMode?.totalPages ?? 0;
 		} else {
 			this.dynamicElements = Array.from(this.component.querySelectorAll(this.dynamicElementSelector));
 			this.totalPages = Math.ceil(this.dynamicElements.length / this.itemsPerPage);
@@ -134,12 +161,13 @@ export class Pagination {
 	};
 
 	createButtonsMap = () => {
+		const totalPages = this.serverMode ? this.serverMode?.totalPages : this.totalPages;
 		const result: pageMapItemModel[] = [];
 		// eslint-disable-next-line unicorn/no-new-array
-		const pages = new Array(this.totalPages).fill('').map((_element, index) => index + 1);
+		const pages = new Array(totalPages).fill('').map((_element, index) => index + 1);
 		// eslint-disable-next-line unicorn/consistent-function-scoping
 		const isButtonVisible = (value: number): boolean =>
-			value === 1 || value === this.totalPages || (value >= this.currentPage - 1 && value <= this.currentPage + 1);
+			value === 1 || value === totalPages || (value >= this.currentPage - 1 && value <= this.currentPage + 1);
 
 		pages.forEach((element, index) => {
 			const mapItem = {
@@ -284,7 +312,7 @@ export class Pagination {
 	};
 
 	goToCurrent = () => {
-		if (!this.serverMode) {
+		if (!this.isServerModeEnabled) {
 			this.openedElements = [];
 			this.dynamicElements.forEach((item, index) => {
 				const isActive = Math.ceil((index + 1) / this.itemsPerPage) === this.currentPage;

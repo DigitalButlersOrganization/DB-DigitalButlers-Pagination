@@ -110,8 +110,27 @@ describe('Hello World Test', () => {
 
 		it('should use totalPages from serverMode instead of dynamic elements', () => {
 			expect(pagination.totalPages).toBe(5);
+			expect(pagination.isServerModeEnabled).toBe(true);
 			expect(pagination.dynamicElements.length).toBe(0);
 			expect(pagination.buttons.length).toBe(5);
+		});
+
+		it('should ignore dynamic elements count when many items exist in DOM', () => {
+			document.body.innerHTML = `
+				<div data-pagination="wrapper">
+					<div data-pagination="container"></div>
+					${'<div class="w-dyn-item" role="listitem"></div>'.repeat(20)}
+				</div>
+			`;
+			component = document.querySelector('[data-pagination="wrapper"]') as HTMLElement;
+			pagination = new Pagination(component, {
+				serverMode: {
+					totalPages: 8,
+				},
+			});
+
+			expect(pagination.totalPages).toBe(8);
+			expect(pagination.buttons.length).toBe(8);
 		});
 
 		it('should not hide dynamic elements on page change', () => {

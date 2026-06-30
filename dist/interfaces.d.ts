@@ -5,12 +5,14 @@ export interface EventModel {
     click?: (pagination: Pagination) => void;
 }
 export type PageNumberTransformer = (number: number) => string;
-export interface PaginationConfigModel {
+export interface ServerModeModel {
+    totalPages: number;
+}
+interface PaginationConfigBaseModel {
     paginationWrapperSelector?: string;
     dynamicElementSelector?: string;
-    previousButtonInner?: string;
-    nextButtonInner?: string;
-    itemsPerPage: number;
+    previousButtonInner?: string | Node;
+    nextButtonInner?: string | Node;
     pageNumberTransformer?: PageNumberTransformer;
     emptyMapInner?: string;
     hiddenButtons?: {
@@ -22,6 +24,13 @@ export interface PaginationConfigModel {
     regularButtonClassnames?: string[];
     devMode?: boolean;
 }
+export type PaginationConfigModel = PaginationConfigBaseModel & ({
+    itemsPerPage: number;
+    serverMode?: never;
+} | {
+    serverMode: ServerModeModel;
+    itemsPerPage?: never;
+});
 export interface hiddenButtonsConfigModel {
     min: number;
 }
@@ -34,3 +43,4 @@ export interface addButtonsPropertiesModel {
     content: string | Node;
     label: string;
 }
+export {};
