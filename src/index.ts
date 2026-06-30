@@ -7,10 +7,13 @@ import {
 	EventModel,
 	PageNumberTransformer,
 	PaginationConfigModel,
+	ServerModeModel,
 	addButtonsPropertiesModel,
 	hiddenButtonsConfigModel,
 	pageMapItemModel,
 } from './interfaces';
+
+export type { EventModel, PageNumberTransformer, PaginationConfigModel, ServerModeModel } from './interfaces';
 
 export class Pagination {
 	component: HTMLElement;
@@ -37,6 +40,7 @@ export class Pagination {
 	hiddenButtons: hiddenButtonsConfigModel;
 	pageNumberTransformer: PageNumberTransformer;
 	devMode: boolean;
+	serverMode: ServerModeModel | undefined;
 	on: EventModel;
 
 	// eslint-disable-next-line default-param-last
@@ -50,7 +54,8 @@ export class Pagination {
 			previousButtonClassnames = [],
 			nextButtonClassnames = [],
 			regularButtonClassnames = [],
-			itemsPerPage,
+			itemsPerPage = 0,
+			serverMode,
 			emptyMapInner = '...',
 			pageNumberTransformer = (number: number) => number.toString(),
 			hiddenButtons = {
@@ -69,6 +74,7 @@ export class Pagination {
 		this.previousButtonInner = previousButtonInner;
 		this.nextButtonInner = nextButtonInner;
 		this.itemsPerPage = itemsPerPage;
+		this.serverMode = serverMode;
 		this.url = new URL(window.location.href);
 		this.currentPage = 1;
 		this.totalPages = 1;
@@ -115,8 +121,13 @@ export class Pagination {
 	};
 
 	initVariables = () => {
-		this.dynamicElements = Array.from(this.component.querySelectorAll(this.dynamicElementSelector));
-		this.totalPages = Math.ceil(this.dynamicElements.length / this.itemsPerPage);
+		if (this.serverMode) {
+			this.dynamicElements = [];
+			this.totalPages = this.serverMode.totalPages;
+		} else {
+			this.dynamicElements = Array.from(this.component.querySelectorAll(this.dynamicElementSelector));
+			this.totalPages = Math.ceil(this.dynamicElements.length / this.itemsPerPage);
+		}
 		this.createButtonsMap();
 		this.addCustomButtons();
 		this.goToCurrent();
@@ -273,20 +284,22 @@ export class Pagination {
 	};
 
 	goToCurrent = () => {
-		this.openedElements = [];
-		this.dynamicElements.forEach((item, index) => {
-			const isActive = Math.ceil((index + 1) / this.itemsPerPage) === this.currentPage;
-			if (isActive) {
-				item.classList.remove(CLASSES.HIDDEN);
-				item.removeAttribute('style');
-				item.removeAttribute('inert');
-				this.openedElements.push(item);
-			} else {
-				item.classList.add(CLASSES.HIDDEN);
-				item.style.display = 'none';
-				item.setAttribute('inert', 'true');
-			}
-		});
+		if (!this.serverMode) {
+			this.openedElements = [];
+			this.dynamicElements.forEach((item, index) => {
+				const isActive = Math.ceil((index + 1) / this.itemsPerPage) === this.currentPage;
+				if (isActive) {
+					item.classList.remove(CLASSES.HIDDEN);
+					item.removeAttribute('style');
+					item.removeAttribute('inert');
+					this.openedElements.push(item);
+				} else {
+					item.classList.add(CLASSES.HIDDEN);
+					item.style.display = 'none';
+					item.setAttribute('inert', 'true');
+				}
+			});
+		}
 		this.addPageParam();
 		this.addRelLinks();
 		this.on?.change?.(this);

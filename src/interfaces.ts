@@ -8,31 +8,38 @@ export interface EventModel {
 
 export type PageNumberTransformer = (number: number) => string;
 
-export interface PaginationConfigModel {
+export interface ServerModeModel {
+	totalPages: number;
+}
+
+interface PaginationConfigBaseModel {
 	paginationWrapperSelector?: string;
 	dynamicElementSelector?: string;
 	previousButtonInner?: string | Node;
 	nextButtonInner?: string | Node;
-	itemsPerPage: number;
 	pageNumberTransformer?: PageNumberTransformer;
 	emptyMapInner?: string;
 	hiddenButtons?: {
 		min: number;
 	};
-	// animationLength?: number;
 	on?: EventModel;
 	previousButtonClassnames?: string[];
 	nextButtonClassnames?: string[];
 	regularButtonClassnames?: string[];
 	devMode?: boolean;
-	// tabbuttonsListSelector: string,
-	// deletableTabs: boolean,
-	// initialTab: number,
-	// orientation: OrientationType,
-	// equalHeight: boolean,
-	// autoplay: AutoPlayModel,
-	// on: EventsModel,
 }
+
+export type PaginationConfigModel = PaginationConfigBaseModel &
+	(
+		| {
+				itemsPerPage: number;
+				serverMode?: never;
+		  }
+		| {
+				serverMode: ServerModeModel;
+				itemsPerPage?: never;
+		  }
+	);
 
 export interface hiddenButtonsConfigModel {
 	min: number;

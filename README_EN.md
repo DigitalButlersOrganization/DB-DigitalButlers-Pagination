@@ -7,6 +7,7 @@ A library for creating pagination with flexible settings.
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Configuration](#configuration)
+- [Server mode](#server-mode)
 - [Public Methods](#public-methods)
 - [Events](#events)
 - [CSS Classes](#css-classes)
@@ -50,7 +51,43 @@ new Pagination('[data-pagination="wrapper"]', {
 | `emptyMapInner`             | `string`                     | `'...'`                           | Text for skipped page numbers             |
 | `pageNumberTransformer`     | `(number: number) => string` | `(n) => n.toString()`             | Function to transform page numbers        |
 | `hiddenButtons`             | `{ min: number }`            | `{ min: 6 }`                      | Minimum number of visible buttons         |
+| `serverMode`                | `{ totalPages: number }`     | -                                 | Server-side pagination mode (see [Server mode](#server-mode)) |
 | `devMode`                   | `boolean`                    | `false`                           | Development mode with additional warnings |
+
+> **Note:** provide either `itemsPerPage` (client mode) or `serverMode` (server mode). `serverMode` takes priority.
+
+## Server mode
+
+Use this when pages are rendered on the server and data is fetched per request instead of slicing DOM elements on the client.
+
+When `serverMode` is set:
+
+- page count comes from `serverMode.totalPages`, not from DOM elements;
+- `dynamicElementSelector` and `itemsPerPage` are ignored;
+- on click, list items are **not** hidden and **no** attributes are applied (`inert`, `display: none`, etc.);
+- only the `page` URL parameter is updated;
+- the `change` event fires — use it to fetch new data from the server;
+- the `click` event works as usual.
+
+```typescript
+import { Pagination } from '@digital-butlers/pagination';
+import '@digital-butlers/pagination/css';
+
+const pagination = new Pagination('[data-pagination="wrapper"]', {
+	serverMode: {
+		totalPages: 12,
+	},
+	on: {
+		change: async (p) => {
+			const response = await fetch(`/api/items?page=${p.currentPage}`);
+			const data = await response.json();
+			renderItems(data);
+		},
+	},
+});
+```
+
+To update the page count after a server response, set `pagination.serverMode.totalPages` and call `pagination.update()`.
 
 ## Public Methods
 
@@ -108,12 +145,20 @@ new Pagination('[data-pagination="wrapper"]', {
 ## TypeScript Types
 
 ```typescript
-interface PaginationConfigModel {
+interface ServerModeModel {
+	totalPages: number;
+}
+
+type PaginationConfigModel = PaginationConfigBase & (
+	| { itemsPerPage: number; serverMode?: never }
+	| { serverMode: ServerModeModel; itemsPerPage?: never }
+);
+
+interface PaginationConfigBase {
 	paginationWrapperSelector?: string;
 	dynamicElementSelector?: string;
 	previousButtonInner?: string | Node;
 	nextButtonInner?: string | Node;
-	itemsPerPage: number;
 	pageNumberTransformer?: PageNumberTransformer;
 	emptyMapInner?: string;
 	hiddenButtons?: {

@@ -7,6 +7,7 @@
 - [Установка](#установка)
 - [Быстрый старт](#быстрый-старт)
 - [Конфигурация](#конфигурация)
+- [Server mode](#server-mode)
 - [Публичные методы](#публичные-методы)
 - [События](#события)
 - [CSS классы](#css-классы)
@@ -50,7 +51,43 @@ new Pagination('[data-pagination="wrapper"]', {
 | `emptyMapInner`             | `string`                     | `'...'`                           | Текст для пропущенных номеров страниц               |
 | `pageNumberTransformer`     | `(number: number) => string` | `(n) => n.toString()`             | Функция преобразования номеров страниц              |
 | `hiddenButtons`             | `{ min: number }`            | `{ min: 6 }`                      | Минимальное количество видимых кнопок               |
+| `serverMode`                | `{ totalPages: number }`     | -                                 | Серверный режим пагинации (см. [Server mode](#server-mode)) |
 | `devMode`                   | `boolean`                    | `false`                           | Режим разработки с дополнительными предупреждениями |
+
+> **Примечание:** укажите либо `itemsPerPage` (клиентский режим), либо `serverMode` (серверный режим). `serverMode` имеет приоритет.
+
+## Server mode
+
+Режим для серверной пагинации, когда данные подгружаются с бэкенда, а не нарезаются на клиенте.
+
+При наличии `serverMode`:
+
+- количество страниц берётся из `serverMode.totalPages`, а не из DOM-элементов;
+- `dynamicElementSelector` и `itemsPerPage` не используются;
+- при клике элементы списка **не** скрываются и **не** получают атрибуты (`inert`, `display: none` и т.д.);
+- обновляется только параметр `page` в URL;
+- вызывается событие `change` — в обработчике можно запросить новые данные с сервера;
+- событие `click` работает как обычно.
+
+```typescript
+import { Pagination } from '@digital-butlers/pagination';
+import '@digital-butlers/pagination/css';
+
+const pagination = new Pagination('[data-pagination="wrapper"]', {
+	serverMode: {
+		totalPages: 12,
+	},
+	on: {
+		change: async (p) => {
+			const response = await fetch(`/api/items?page=${p.currentPage}`);
+			const data = await response.json();
+			renderItems(data);
+		},
+	},
+});
+```
+
+Чтобы обновить количество страниц после ответа сервера, измените `pagination.serverMode.totalPages` и вызовите `pagination.update()`.
 
 ## Публичные методы
 
@@ -94,12 +131,20 @@ new Pagination('[data-pagination="wrapper"]', {
 ## TypeScript типы
 
 ```typescript
-interface PaginationConfigModel {
+interface ServerModeModel {
+	totalPages: number;
+}
+
+type PaginationConfigModel = PaginationConfigBase & (
+	| { itemsPerPage: number; serverMode?: never }
+	| { serverMode: ServerModeModel; itemsPerPage?: never }
+);
+
+interface PaginationConfigBase {
 	paginationWrapperSelector?: string;
 	dynamicElementSelector?: string;
 	previousButtonInner?: string | Node;
 	nextButtonInner?: string | Node;
-	itemsPerPage: number;
 	pageNumberTransformer?: PageNumberTransformer;
 	emptyMapInner?: string;
 	hiddenButtons?: {
